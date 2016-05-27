@@ -1,2 +1,2 @@
 # yii2-cropit
-cropit implementation for Yii2
+Implementation of Scott Cheng's jQuery plugin cropit.
