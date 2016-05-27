@@ -8,6 +8,7 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\JsExpression;
 use yii\widgets\InputWidget;
+use \yii\base\Exception;
 
 /**
  * Class CropitWidget
@@ -46,7 +47,7 @@ class CropitWidget extends InputWidget
      * This array will be JSON encoded and passed to the `cropit()` call.
      *
      * Please refer to the
-     * [official cropit options documentation](http://scottcheng.github.io/cropit/#docs-options-preview)
+     * [official cropit options documentation](http://scottcheng.github.io/cropit/#docs)
      * for an overview of all options and how to use them.
      */
     public $pluginOptions = [];
@@ -180,7 +181,6 @@ class CropitWidget extends InputWidget
         }
 
         $this->initControls();
-        $this->initPluginOptions();
     }
 
     /**
@@ -282,7 +282,7 @@ class CropitWidget extends InputWidget
      * @param string $optionsProperty the name of the class property holding the button options.
      * @param string $defaultTag the name of the default button HTML tag.
      * @return string the HTML for the button.
-     * @throws yii\base\Exception if the button label is not present in the option.
+     * @throws \yii\base\Exception if the button label is not present in the option.
      * @see selectImageButtonOptions
      * @see cropImageButtonOptions
      */
@@ -291,7 +291,7 @@ class CropitWidget extends InputWidget
         $label = ArrayHelper::remove($this->$optionsProperty, 'label');
 
         if (!$label) {
-            throw new yii\base\Exception("Button label must be specified.");
+            throw new Exception("Button label must be specified.");
         }
 
         $tag = ArrayHelper::remove($this->$optionsProperty, 'tag', $defaultTag);
@@ -309,8 +309,10 @@ class CropitWidget extends InputWidget
      * Renders the zoom controls consisting of slider and optional labels.
      *
      * If zoom in/out labels are specified, the corresponding markup is returned.
-     * All zoom controls can be wrapped in a parent element when [[zoomControlsWrapperOptions]] is an options array. The
-     * wrapper can be disabled by setting [[zoomControlsWrapperOptions]] to "false".
+     *
+     * All zoom controls can be wrapped in a parent element when [[zoomControlsWrapperOptions]] is an options array.
+     *
+     * The wrapper can be disabled by setting [[zoomControlsWrapperOptions]] to "false".
      * @return string the HTML for the zoom controls.
      * @uses [[renderZoomLabel()]]
      * @see zoomControlsWrapperOptions
