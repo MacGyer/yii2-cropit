@@ -3,12 +3,12 @@
 namespace macgyer\yii2cropit\widgets;
 
 use macgyer\yii2cropit\assets\CropitAsset;
-use common\helpers\ArrayHelper;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\web\JsExpression;
 use yii\widgets\InputWidget;
-use \yii\base\Exception;
+use yii\base\Exception;
 
 /**
  * Class CropitWidget
