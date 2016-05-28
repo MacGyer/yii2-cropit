@@ -53,6 +53,25 @@ class CropitWidget extends InputWidget
     public $pluginOptions = [];
 
     /**
+     * @var string the custom JS actions to perform.
+     * 
+     * These handlers will be appended to the existing scripts.
+     * @see [[registerAssets()]]
+     */
+    public $customJsHandlers;
+
+    /**
+     * @var array the options passed to the cropit export function.
+     *
+     * This array will be JSON encoded and passed to the `cropit('export', options)` call.
+     *
+     * Please refer to the
+     * [official cropit API documentation](http://scottcheng.github.io/cropit/#docs-apis)
+     * for an overview of all options and how to use them.
+     */
+    public $imageExportOptions = [];
+
+    /**
      * @var array the HTML attributes for the select image button tag.
      *
      * The following special options are recognized:
@@ -258,21 +277,40 @@ class CropitWidget extends InputWidget
 
         if ($this->pluginOptions !== false) {
             $options = empty($this->pluginOptions) ? '' : Json::htmlEncode($this->pluginOptions);
-            $js = "jQuery('#$id').cropit($options);";
+            $exportOptions = empty($this->imageExportOptions) ? '' : Json::htmlEncode($this->imageExportOptions);
 
-            $js .= "jQuery('.{$id}_select-image-btn').on('click', function() {
+            $js = [];
+            
+            // init cropit
+            $js[] = "jQuery('#$id').cropit($options);";
+
+            // select image
+            $js[] = "jQuery('.{$id}_select-image-btn').on('click', function() {
                         jQuery('.{$id}_image-input').click();
                     });";
 
-            $js .= "jQuery('.{$id}_crop-image-btn').on('click', function() {
-                        var me = $(this);
-                        var imageData = jQuery('#$id').cropit('export', {
-                            originalSize: true
-                        });                       
-                        jQuery('.{$id}_crop-image-data').val(imageData);
+            // rotate right
+            $js[] = "jQuery('.{$id}_rotate-right').on('click', function() {
+                        jQuery('#{$id}').cropit('rotateCW');
                     });";
 
-            $view->registerJs($js);
+            // rotate left
+            $js[] = "jQuery('.{$id}_rotate-left').on('click', function() {
+                        jQuery('#{$id}').cropit('rotateCCW');
+                    });";
+
+            // export the image
+            $js[] = "jQuery('.{$id}_crop-image-btn').on('click', function() {
+                        var imageData = jQuery('#$id').cropit('export', $exportOptions);                       
+                        jQuery('.{$id}_crop-image-data').val(imageData);
+                    });";
+            
+            // append user defined JS
+            if ($this->customJsHandlers) {
+                $js[] = $this->customJsHandlers;
+            }
+
+            $view->registerJs(implode("\n", $js));
         }
     }
 
@@ -494,12 +532,12 @@ class CropitWidget extends InputWidget
             if (!isset($this->rotateLeftButtonOptions['label'])) {
                 $this->rotateLeftButtonOptions['label'] = 'CCW';
             }
-            Html::addCssClass($this->rotateLeftButtonOptions, ['rotate-left-button' => "control-rotate-left"]);
+            Html::addCssClass($this->rotateLeftButtonOptions, ['rotate-left-button' => "control-rotate-left {$this->containerOptions['id']}_rotate-left"]);
 
             if (!isset($this->rotateRightButtonOptions['label'])) {
                 $this->rotateRightButtonOptions['label'] = 'CW';
             }
-            Html::addCssClass($this->rotateRightButtonOptions, ['rotate-right-button' => "control-rotate-right"]);
+            Html::addCssClass($this->rotateRightButtonOptions, ['rotate-right-button' => "control-rotate-right {$this->containerOptions['id']}_rotate-right"]);
         }
     }
 }
