@@ -114,9 +114,7 @@ class CropitWidget extends InputWidget
      * If this is being rendered, the wrapper encloses the [[zoomSliderOptions]], [[zoomOutLabelOptions]] and [[zoomInLabelOptions]].
      *
      * The following special options are recognized:
-     * - tag: string, defaults to "span", the name of the container tag.
-     * - label: string, defaults to "+", the label on the button.
-     * - encodeLabel: boolean, defaults to "true", whether to encode the label.
+     * - tag: string, defaults to "div", the name of the container tag.
      *
      * To disable the rendering of the wrapper tag, set this variable to boolean "false".
      *
@@ -126,22 +124,49 @@ class CropitWidget extends InputWidget
     public $zoomControlsWrapperOptions = [];
 
     /**
-     * @var boolean
+     * @var boolean whether to show rotate controls. If this option is set to "false", no rotation control elements including
+     * [[rotateLeftButtonOptions]], [[rotateRightButtonOptions]] and [[rotateControlsWrapperOptions]] are rendered.
      */
-    public $showRotateButtons = false;
+    public $showRotateControls = true;
 
     /**
-     * @var array
+     * @var array the HTML attributes for the counter clockwise rotation tag.
+     *
+     * The following special options are recognized:
+     * - tag: string, defaults to "div", the name of the container tag.
+     * - label: string, defaults to "CCW", the label on the button.
+     * - encodeLabel: boolean, defaults to "true", whether to encode the label.
+     *
+     * @see [yii\helpers\BaseHtml::renderTagAttributes()](http://www.yiiframework.com/doc-2.0/yii-helpers-basehtml.html#renderTagAttributes()-detail)
+     * for details on how attributes are being rendered.
      */
     public $rotateLeftButtonOptions = [];
 
     /**
-     * @var array
+     * @var array the HTML attributes for the clockwise rotation tag.
+     *
+     * The following special options are recognized:
+     * - tag: string, defaults to "div", the name of the container tag.
+     * - label: string, defaults to "CW", the label on the button.
+     * - encodeLabel: boolean, defaults to "true", whether to encode the label.
+     *
+     * @see [yii\helpers\BaseHtml::renderTagAttributes()](http://www.yiiframework.com/doc-2.0/yii-helpers-basehtml.html#renderTagAttributes()-detail)
+     * for details on how attributes are being rendered.
      */
     public $rotateRightButtonOptions = [];
 
     /**
-     * @var array|boolean
+     * @var array|boolean the HTML attributes for the rotation controls wrapper tag.
+     *
+     * If this is being rendered, the wrapper encloses the [[rotateLeftButtonOptions]] and [[rotateRightButtonOptions]].
+     *
+     * The following special options are recognized:
+     * - tag: string, defaults to "div", the name of the container tag.
+     *
+     * To disable the rendering of the wrapper tag, set this variable to boolean "false".
+     *
+     * @see [yii\helpers\BaseHtml::renderTagAttributes()](http://www.yiiframework.com/doc-2.0/yii-helpers-basehtml.html#renderTagAttributes()-detail)
+     * for details on how attributes are being rendered.
      */
     public $rotateControlsWrapperOptions = [];
 
@@ -178,6 +203,11 @@ class CropitWidget extends InputWidget
         // zoom controls wrapper
         if ($this->zoomControlsWrapperOptions !== false) {
             Html::addCssClass($this->zoomControlsWrapperOptions, ['zoom-controls' => 'controls-zoom']);
+        }
+
+        // rotate controls wrapper
+        if ($this->showRotateControls === true && $this->rotateControlsWrapperOptions !== false) {
+            Html::addCssClass($this->rotateControlsWrapperOptions, ['rotate-controls' => 'controls-rotate']);
         }
 
         $this->initControls();
@@ -267,7 +297,10 @@ class CropitWidget extends InputWidget
         // select image button
         $html[] = $this->renderButton('selectImageButtonOptions');
 
-        // zoom slider
+        // rotate controls
+        $html[] = $this->renderRotateControls();
+
+        // zoom controls
         $html[] = $this->renderZoomControls();
 
         // crop image button
@@ -303,6 +336,34 @@ class CropitWidget extends InputWidget
         $encodeLabel = ArrayHelper::remove($this->$optionsProperty, 'encodeLabel', true);
 
         return Html::tag($tag, $encodeLabel ? Html::encode($label) : $label, $this->$optionsProperty);
+    }
+
+    protected function renderRotateControls()
+    {
+        if ($this->showRotateControls === false) {
+            return '';
+        }
+
+        $html = [];
+
+        // wrapper
+        if ($this->rotateControlsWrapperOptions !== false) {
+            $rotateControlsWrapperTag = ArrayHelper::remove($this->rotateControlsWrapperOptions, 'tag', 'div');
+            $html[] = Html::beginTag($rotateControlsWrapperTag, $this->rotateControlsWrapperOptions);
+        }
+
+        // rotate left button
+        $html[] = $this->renderButton('rotateLeftButtonOptions');
+
+        // rotate right button
+        $html[] = $this->renderButton('rotateRightButtonOptions');
+
+        // end wrapper
+        if ($this->rotateControlsWrapperOptions !== false) {
+            $html[] = Html::endTag($rotateControlsWrapperTag);
+        }
+
+        return implode("\n", $html);
     }
 
     /**
@@ -414,6 +475,19 @@ class CropitWidget extends InputWidget
                 $this->zoomInLabelOptions['label'] = '+';
             }
             Html::addCssClass($this->zoomInLabelOptions, ['zoom-in-label' => "control-zoom-in"]);
+        }
+
+        // rotate buttons
+        if ($this->showRotateControls === true) {
+            if (!isset($this->rotateLeftButtonOptions['label'])) {
+                $this->rotateLeftButtonOptions['label'] = 'CCW';
+            }
+            Html::addCssClass($this->rotateLeftButtonOptions, ['rotate-left-button' => "control-rotate-left"]);
+
+            if (!isset($this->rotateRightButtonOptions['label'])) {
+                $this->rotateRightButtonOptions['label'] = 'CW';
+            }
+            Html::addCssClass($this->rotateRightButtonOptions, ['rotate-right-button' => "control-rotate-right"]);
         }
     }
 }
