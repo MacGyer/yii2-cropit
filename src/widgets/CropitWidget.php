@@ -338,6 +338,18 @@ class CropitWidget extends InputWidget
         return Html::tag($tag, $encodeLabel ? Html::encode($label) : $label, $this->$optionsProperty);
     }
 
+    /**
+     * Renders the rotate controls consisting of two buttons, each for one direction.
+     *
+     * No controls are rendered when [[showRotateControls]] is set to "false".
+     *
+     * All rotate controls can be wrapped in a parent element when [[rotateControlsWrapperOptions]] is an options array.
+     * The wrapper can be disabled by setting [[rotateControlsWrapperOptions]] to "false".
+     *
+     * @return string the HTML for the zoom controls.
+     * @uses [[renderZoomLabel()]]
+     * @see zoomControlsWrapperOptions
+     */
     protected function renderRotateControls()
     {
         if ($this->showRotateControls === false) {
