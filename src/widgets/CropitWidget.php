@@ -244,12 +244,13 @@ class CropitWidget extends InputWidget
         $html[] = Html::beginTag($tag, $this->containerOptions);
 
         // hidden file input element
+        $html[] = Html::fileInput("{$this->name}_original", null, ['class' => "cropit-image-input {$this->containerOptions['id']}_image-input"]);
+        
+        // cropped image data
         if ($this->hasModel()) {
-            $html[] = Html::activeFileInput($this->model, "{$this->attribute}[original]", ['class' => "cropit-image-input {$this->containerOptions['id']}_image-input"]);
-            $html[] = Html::activeHiddenInput($this->model, "{$this->attribute}[crop]", ['class' => "{$this->containerOptions['id']}_crop-image-data"]);
+            $html[] = Html::activeHiddenInput($this->model, $this->attribute, ['class' => "{$this->containerOptions['id']}_crop-image-data"]);
         } else {
-            $html[] = Html::fileInput("{$this->name}[original]", null, ['class' => "cropit-image-input {$this->containerOptions['id']}_image-input"]);
-            $html[] = Html::hiddenInput("{$this->name}[crop]", null, ['class' => "{$this->containerOptions['id']}_crop-image-data"]);
+            $html[] = Html::hiddenInput($this->name, null, ['class' => "{$this->containerOptions['id']}_crop-image-data"]);
         }
 
         // Preview
