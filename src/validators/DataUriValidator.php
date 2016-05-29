@@ -36,8 +36,7 @@ class DataUriValidator extends Validator
 
     /**
      * Validates a single attribute.
-     * Child classes must implement this method to provide the actual validation logic.
-     * @param [\yii\base\Model](http://www.yiiframework.com/doc-2.0/yii-base-model.html) $model the data model to be validated
+     * @param \yii\base\Model $model the data model to be validated
      * @param string $attribute the name of the attribute to be validated.
      * @uses [[renderMessage()]]
      * @uses [[validateValue()]]
@@ -54,7 +53,6 @@ class DataUriValidator extends Validator
 
     /**
      * Validates a value.
-     * A validator class can implement this method to support data validation out of the context of a data model.
      * @param mixed $value the data value to be validated.
      * @return array|null the error message and the parameters to be inserted into the error message.
      */
@@ -70,9 +68,9 @@ class DataUriValidator extends Validator
     /**
      * Returns the JavaScript needed for performing client-side validation.
      *
-     * @param [\yii\base\Model](http://www.yiiframework.com/doc-2.0/yii-base-model.html) $model the data model being validated
+     * @param \yii\base\Model $model the data model being validated
      * @param string $attribute the name of the attribute to be validated.
-     * @param [\yii\web\View](http://www.yiiframework.com/doc-2.0/yii-web-view.html) $view the view object that is going to be used to render views or view files
+     * @param \yii\web\View $view the view object that is going to be used to render views or view files
      * containing a model form with this validator applied.
      * @return string the client-side validation script.
      * @see [\yii\widgets\ActiveForm::enableClientValidation](http://www.yiiframework.com/doc-2.0/yii-widgets-activeform.html#$enableClientValidation-detail)
