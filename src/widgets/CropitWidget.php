@@ -16,7 +16,37 @@ use yii\widgets\InputWidget;
 use yii\base\Exception;
 
 /**
- * Class CropitWidget
+ * CropitWidget provides a wrapper for cropit, a jQuery crop and zoom tool.
+ *
+ * This widget can be used in ActiveForm or as standalone input widget and comes with a [Data URI](https://en.wikipedia.org/wiki/Data_URI_scheme)
+ * validator.
+ *
+ * The widget can be profoundly configured to meet your needs. Please see all options and below and refer to the original
+ * [cropit documentation](http://scottcheng.github.io/cropit/).
+ *
+ * To use the widget in your form, you might do the following:
+ *
+ * ```php
+ * // add the field to your Model class, either ActiveRecord property or class member:
+ *
+ * public $cropped_image_data;
+ *
+ * // rules
+ * public function rules()
+ * {
+ *      return [
+ *          // more rules
+ *          ['cropped_image_data', \macgyer\yii2cropit\validators\DataUriValidator::className()],
+ *      ];
+ * }
+ * ```
+ * 
+ * ```php
+ * // in your View, define the field and widget:
+ * 
+ * <?= $form->field($model, 'cropped_image_data')->widget(\macgyer\yii2cropit\widgets\CropitWidget::className()) ?>
+ * ```
+ *
  * @package yii2cropit
  * @see http://scottcheng.github.io/cropit/
  */
