@@ -51,7 +51,7 @@ public function rules()
 ## Change log
 
 ### 1.0.1 - 2016-05-30
-* moved DataUriValidator into separate repo
+* moved [DataUriValidator into separate repo](https://github.com/MacGyer/yii2-data-uri-validator)
 
 ### 1.0.0 - 2016-05-29
 * initial release
