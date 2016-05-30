@@ -16,7 +16,7 @@ To install the package add the following to the ```require``` section of your co
 ## Usage
 
 This widget can be used in ActiveForm or as standalone input widget and comes with a [Data URI](https://en.wikipedia.org/wiki/Data_URI_scheme)
-validator.
+validator (as Composer dependency).
 
 The widget can be profoundly configured to meet your needs. Please see all options and below and refer to the original
 [cropit documentation](http://scottcheng.github.io/cropit/).
