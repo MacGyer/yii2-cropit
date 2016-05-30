@@ -33,7 +33,7 @@ public function rules()
 {
   return [
       // more rules
-      ['cropped_image_data', \macgyer\yii2cropit\validators\DataUriValidator::className()],
+      ['cropped_image_data', \macgyer\yii2dataurivalidator\DataUriValidator::className()],
   ];
 }
 ```
@@ -49,6 +49,9 @@ public function rules()
 * create style assets
 
 ## Change log
+
+### 1.0.1 - 2016-05-30
+* moved DataUriValidator into separate repo
 
 ### 1.0.0 - 2016-05-29
 * initial release

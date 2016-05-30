@@ -36,7 +36,7 @@ use yii\base\Exception;
  * {
  *      return [
  *          // more rules
- *          ['cropped_image_data', \macgyer\yii2cropit\validators\DataUriValidator::className()],
+ *          ['cropped_image_data', \macgyer\yii2dataurivalidator\DataUriValidator::className()],
  *      ];
  * }
  * ```
