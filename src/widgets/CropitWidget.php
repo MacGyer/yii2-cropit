@@ -311,12 +311,12 @@ class CropitWidget extends InputWidget
         CropitAsset::register($view);
         $id = $this->containerOptions['id'];
 
+        $js = [];
+
         if ($this->pluginOptions !== false) {
             $options = empty($this->pluginOptions) ? '' : Json::htmlEncode($this->pluginOptions);
-            $exportOptions = empty($this->imageExportOptions) ? '' : Json::htmlEncode($this->imageExportOptions);
+            $exportOptions = empty($this->imageExportOptions) ? '{}' : Json::htmlEncode($this->imageExportOptions);
 
-            $js = [];
-            
             // init cropit
             $js[] = "jQuery('#$id').cropit($options);";
 
@@ -340,14 +340,14 @@ class CropitWidget extends InputWidget
                         var imageData = jQuery('#$id').cropit('export', $exportOptions);                       
                         jQuery('.{$id}_crop-image-data').val(imageData);
                     });";
-            
-            // append user defined JS
-            if ($this->customJsHandlers) {
-                $js[] = $this->customJsHandlers;
-            }
-
-            $view->registerJs(implode("\n", $js));
         }
+
+        // append user defined JS
+        if ($this->customJsHandlers) {
+            $js[] = $this->customJsHandlers;
+        }
+        
+        $view->registerJs(implode("\n", $js));
     }
 
     /**
