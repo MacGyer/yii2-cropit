@@ -50,6 +50,10 @@ public function rules()
 
 ## Change log
 
+### 1.0.2 - 2016-06-02
+* changed handling of custom JS handlers (https://github.com/MacGyer/yii2-cropit/issues/2)
+* fixed image export options bug (https://github.com/MacGyer/yii2-cropit/issues/1)
+
 ### 1.0.1 - 2016-05-30
 * moved [DataUriValidator into separate repo](https://github.com/MacGyer/yii2-data-uri-validator)
 
