@@ -316,7 +316,6 @@ class CropitWidget extends InputWidget
         if ($this->pluginOptions !== false) {
             $options = empty($this->pluginOptions) ? '' : Json::htmlEncode($this->pluginOptions);
             $exportOptions = empty($this->imageExportOptions) ? '{}' : Json::htmlEncode($this->imageExportOptions);
-            $areZoomLabelsControls = ArrayHelper::remove($this->zoomSliderOptions, 'labelControls', false);
 
             // init cropit
             $js[] = "jQuery('#$id').cropit($options);";
@@ -341,26 +340,6 @@ class CropitWidget extends InputWidget
                         var imageData = jQuery('#$id').cropit('export', $exportOptions);                       
                         jQuery('.{$id}_crop-image-data').val(imageData);
                     });";
-
-            if ($areZoomLabelsControls && $this->zoomInLabelOptions !== false && $this->zoomOutLabelOptions !== false) {
-                $js[] = "jQuery('#{$id} .control-zoom-out, #{$id} .control-zoom-in').on('click', function () {
-                            var me = $(this);
-                            var slider = $('.{$id}_zoom-slider');
-                            var step = parseFloat(slider.attr('step'));
-                            var direction = me.data('zoom-direction');
-                            var currentValue = parseFloat(slider.val());
-                            
-                            if (direction === 'in' && (currentValue + step) <= 100) {
-                                currentValue += step;
-                                slider.val(currentValue);
-                            }
-                            
-                            if (direction === 'out' && (currentValue - step) >= 0) {
-                                currentValue -= step;
-                                slider.val(currentValue);
-                            }
-                        });";
-            }
         }
 
         // append user defined JS
@@ -500,7 +479,7 @@ class CropitWidget extends InputWidget
         }
 
         // zoom out label
-        $zoomOutLabel = $this->renderZoomLabel($this->zoomOutLabelOptions, 'out');
+        $zoomOutLabel = $this->renderZoomLabel($this->zoomOutLabelOptions);
         if ($zoomOutLabel !== false) {
             $html[] = $zoomOutLabel;
         }
@@ -509,7 +488,7 @@ class CropitWidget extends InputWidget
         $html[] = Html::input('range', null, null, $this->zoomSliderOptions);
 
         // zoom in label
-        $zoomInLabel = $this->renderZoomLabel($this->zoomInLabelOptions, 'in');
+        $zoomInLabel = $this->renderZoomLabel($this->zoomInLabelOptions);
         if ($zoomInLabel !== false) {
             $html[] = $zoomInLabel;
         }
@@ -525,18 +504,15 @@ class CropitWidget extends InputWidget
     /**
      * Renders a single zoom label tag.
      * @param array|bool $labelOptions the options for the label. If set to "false", no label will be rendered.
-     * @param string $direction the zoom direction, 'in' or 'out'
      * @return string the markup for the label tag.
      * @see zoomOutLabelOptions
      * @see zoomInLabelOptions
      */
-    protected function renderZoomLabel($labelOptions, $direction)
+    protected function renderZoomLabel($labelOptions)
     {
         if ($labelOptions === false) {
             return '';
         }
-
-        $labelOptions['data-zoom-direction'] = $direction;
 
         $zoomLabelTag = ArrayHelper::remove($labelOptions, 'tag', 'span');
         $zoomLabelLabel = ArrayHelper::remove($labelOptions, 'label');

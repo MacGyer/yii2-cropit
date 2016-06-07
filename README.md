@@ -47,7 +47,6 @@ public function rules()
 ## Road map
 
 * create style assets
-* clickable zoom buttons
 
 ## Change log
 
