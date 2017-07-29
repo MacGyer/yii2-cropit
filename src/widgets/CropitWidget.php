@@ -40,10 +40,10 @@ use yii\base\Exception;
  *      ];
  * }
  * ```
- * 
+ *
  * ```php
  * // in your View, define the field and widget:
- * 
+ *
  * <?= $form->field($model, 'cropped_image_data')->widget(\macgyer\yii2cropit\widgets\CropitWidget::className()) ?>
  * ```
  *
@@ -89,7 +89,7 @@ class CropitWidget extends InputWidget
 
     /**
      * @var string the custom JS actions to perform.
-     * 
+     *
      * These handlers will be appended to the existing scripts.
      * @see [[registerAssets()]]
      */
@@ -280,7 +280,7 @@ class CropitWidget extends InputWidget
 
         // hidden file input element
         $html[] = Html::fileInput("{$this->name}_original", null, ['class' => "cropit-image-input {$this->containerOptions['id']}_image-input"]);
-        
+
         // cropped image data
         if ($this->hasModel()) {
             $html[] = Html::activeHiddenInput($this->model, $this->attribute, ['class' => "{$this->containerOptions['id']}_crop-image-data"]);
@@ -346,7 +346,7 @@ class CropitWidget extends InputWidget
         if ($this->customJsHandlers) {
             $js[] = $this->customJsHandlers;
         }
-        
+
         $view->registerJs(implode("\n", $js));
     }
 
@@ -395,21 +395,22 @@ class CropitWidget extends InputWidget
      */
     protected function renderButton($optionsProperty, $defaultTag = 'button')
     {
-        $label = ArrayHelper::remove($this->$optionsProperty, 'label');
+        $buttonConfig = $this->$optionsProperty;
+        $label = ArrayHelper::remove($buttonConfig, 'label');
 
         if (!$label) {
             throw new Exception("Button label must be specified.");
         }
 
-        $tag = ArrayHelper::remove($this->$optionsProperty, 'tag', $defaultTag);
+        $tag = ArrayHelper::remove($buttonConfig, 'tag', $defaultTag);
 
-        if ($tag === 'button' && !isset($this->$optionsProperty['type'])) {
-            $this->$optionsProperty['type'] = 'button';
+        if ($tag === 'button' && !isset($buttonConfig['type'])) {
+            $buttonConfig['type'] = 'button';
         }
 
-        $encodeLabel = ArrayHelper::remove($this->$optionsProperty, 'encodeLabel', true);
+        $encodeLabel = ArrayHelper::remove($buttonConfig, 'encodeLabel', true);
 
-        return Html::tag($tag, $encodeLabel ? Html::encode($label) : $label, $this->$optionsProperty);
+        return Html::tag($tag, $encodeLabel ? Html::encode($label) : $label, $buttonConfig);
     }
 
     /**

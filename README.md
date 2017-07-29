@@ -1,5 +1,11 @@
+[![license](https://img.shields.io/badge/LICENCE-BSD--3--Clause-blue.svg)](https://packagist.org/packages/macgyer/yii2-cropit)
+[![Github Release](https://img.shields.io/github/release/macgyer/yii2-cropit.svg)](https://packagist.org/packages/macgyer/yii2-cropit)
+[![Packagist](https://img.shields.io/packagist/dt/macgyer/yii2-cropit.svg)](https://packagist.org/packages/macgyer/yii2-cropit)
+
 # yii2-cropit
 Implementation of Scott Cheng's jQuery plugin [cropit](https://github.com/scottcheng/cropit).
+
+**Currently implemented cropit.js version: 0.5.1**
 
 ## Installation
 
@@ -50,9 +56,13 @@ public function rules()
 
 ## Change log
 
+### 1.0.3 - 2017-07-29
+* fixed illegal offset type error when used in PHP 5.6 environment ([#3](https://github.com/MacGyer/yii2-cropit/issues/3))
+* cropit.js version set to 0.5.1
+
 ### 1.0.2 - 2016-06-02
-* changed handling of custom JS handlers (https://github.com/MacGyer/yii2-cropit/issues/2)
-* fixed image export options bug (https://github.com/MacGyer/yii2-cropit/issues/1)
+* changed handling of custom JS handlers ([#2](https://github.com/MacGyer/yii2-cropit/issues/2))
+* fixed image export options bug ([#1](https://github.com/MacGyer/yii2-cropit/issues/1))
 
 ### 1.0.1 - 2016-05-30
 * moved [DataUriValidator into separate repo](https://github.com/MacGyer/yii2-data-uri-validator)
